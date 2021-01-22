@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品管理系统后台</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="__PUB__/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="__PUB__/css/font.css">
+    <link rel="stylesheet" href="__PUB__/css/xadmin.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+    <script src="__PUB__/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="__PUB__/js/xadmin.js"></script>
+
+</head>
+<body>
+    <!-- 中部开始 -->
+    <div class="wrapper">
+        <!-- 右侧主体开始 -->
+        <div class="page-content">
+          <div class="content">
+            <!-- 右侧内容框架，更改从这里开始 -->
+            <form class="layui-form" action="{:url('@admin/menu/do_edit')}" method="post" onSubmit="return legalCheck();">
+                
+                <div class="layui-form-item">
+                    <label for="rename" class="layui-form-label">
+                        原菜单名称
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="rename" name="rename" required lay-verify="required" readonly autocomplete="off" value={$adee.name} class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="name" class="layui-form-label">
+                        菜单名称
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="name" name="name" required lay-verify="required" autocomplete="off" value={$adee.name} class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        <span class="x-red">*</span>2-10位中文字符
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="des" class="layui-form-label">
+                        控制器
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="c" name="c" required lay-verify="required" autocomplete="off" value={$adee.c} class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        请由字母组成，不超过10字符
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="des" class="layui-form-label">
+                        方法
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="a" name="a" required lay-verify="required" autocomplete="off" value={$adee.a} class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        请由字母组成，不超过10字符
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label for="group" class="layui-form-label">
+                        父菜单
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="agroup" name="agroup" required lay-verify="required" readonly 
+                        autocomplete="off" value={$agroup} class="layui-input">
+                    </div>
+                    <div class="layui-input-inline">
+                        <select name="parentid" id="parentid">
+                        <option value="m">修改</option>    
+                        <option value="0">根节点</option>
+                        <option value="1">管理设置</option>
+                        <option value="18">系统设置</option>
+                        <option value="23">个人设置</option>
+                        <option value="31">系统首页</option>
+                        <option value="32">商品管理</option>
+                        <option value="33">订单管理</option>
+                        </select><br>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_sign" class="layui-form-label">
+                    </label>
+                    <button class="layui-btn" key="set-mine" lay-filter="save" lay-submit>
+                        保存
+                    </button>
+                </div>
+            </form>
+            <!-- 右侧内容框架，更改从这里结束 -->
+          </div>
+        </div>
+        <!-- 右侧主体结束 -->
+
+        <script>
+        function legalCheck(){
+            var nameRegex = /^[\u4e00-\u9fa5]{2,10}$/;
+            var caRegex = new RegExp('^[a-zA-Z]+$');
+            var name=document.getElementById("name").value;
+            var c=document.getElementById("c").value;
+            var a=document.getElementById("a").value;
+            var skip=true;
+            if(!nameRegex.test(name)){
+                alert("菜单名不符合规范！");
+                skip=false;
+                return false;
+            }else if(!caRegex.test(c)||c.length>10){
+                alert("控制器名称不符合规范！");
+                skip=false;
+                return false;
+            }else if(!caRegex.test(a)||a.length>10){
+                alert("方法名不符合规范！");
+                skip=false;
+                return false;
+            }
+            if(skip){
+                return true;
+            }
+        }
+        </script>
+    </div>
+    <!-- 中部结束 -->
+   
+</body>
+</html>

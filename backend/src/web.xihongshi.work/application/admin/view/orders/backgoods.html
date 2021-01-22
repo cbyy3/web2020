@@ -1,0 +1,73 @@
+退货
+    <!-- 右侧主体开始 -->
+        <div class="page-content">
+          <div class="content">
+            <!-- 右侧内容框架，更改从这里开始 -->
+            <form class="layui-form xbs" action="" >
+                <div class="layui-form-pane" style="text-align: center;">
+                  <div class="layui-form-item" style="display: inline-block;">
+                    <label class="layui-form-label xbs768">查找</label>
+                    
+                    <div class="layui-input-inline">
+                      <input type="text" name="findbyname"  placeholder="请输入商品编号：{$namelast}" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-input-inline" style="width:80px">
+                        <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                    </div>
+                  </div>
+                </div> 
+            </form>
+            <span class="x-right" style="line-height:40px">共有数据：{$numlist} 条</span>
+            <table class="layui-table">
+                <thead>
+                    <tr>
+                        <th>
+                            订单编号
+                        </th>
+                        <th>
+                            本状态创建时间
+                        </th>
+                        <th>
+                            状态
+                        </th>
+                        <th>
+                            退货
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {volist name="maglist" id="vo"}
+                    <tr>
+                        <td>
+                            {$vo.id}
+                        </td>
+                        <td>
+                            {$vo.createtime} 
+                        </td>
+                        <td>
+                            {$vo.status} 
+                        </td>
+                        <td class="td-manage">
+                            
+                            <a title="退货" href="javascript:;" onclick="member_edit('编辑','backedit?void={$vo.id}','4','800','500')"
+                            class="ml-5" style="text-decoration:none">
+                                <i class="layui-icon">&#xe642;</i>
+                            </a>
+                            
+                            
+                        </td>
+                    </tr>
+                    {/volist}
+                </tbody>
+            </table>
+            <!-- 右侧内容框架，更改从这里结束 -->
+          </div>
+        </div>
+        <!-- 右侧主体结束 -->
+        
+        <script>
+        // 用户-编辑
+        function member_edit (title,url,id,w,h) {
+            x_admin_show(title,url,w,h); 
+        }
+        </script>

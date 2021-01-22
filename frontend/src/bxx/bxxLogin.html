@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>并夕夕商品秒杀系统</title>
+        <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.1/vue.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<!-- 1. 导入css -->
+		<link href="https://cdn.bootcss.com/element-ui/2.14.1/theme-chalk/index.css" rel="stylesheet">
+		<!-- 2. 引入vue和vue-router-->
+		<script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+		<!-- 未使用vue路由功能可不导入 -->
+		<script src="https://cdn.bootcss.com/vue-router/3.0.6/vue-router.js"></script>
+		<!-- 3. 引入ElementUI组件 -->
+		<script src="https://cdn.bootcss.com/element-ui/2.14.1/index.js"></script>
+	</head>
+	<body>
+	    <h2>并夕夕商品秒杀系统-登陆</h2>
+		<div id="login">
+    		<el-form ref="form" :model="form" label-width="80px">
+              <el-form-item label="用户名">
+                <el-input v-model="form.username" required="required"></el-input>
+              </el-form-item>
+              <el-form-item label="密码">
+                <el-input type="password" v-model="form.password" required="required"></el-input>
+              </el-form-item>
+              <el-form-item label="验证">
+                <canvas id="canvas" width="100" height="43" onclick="dj()"></canvas>
+                <el-input type="text" v-model="form.text" required="required" id ="text"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="onSubmit">登陆</el-button>
+              </el-form-item>
+            </el-form>
+     
+		</div>
+		<script>
+    		var vm=new Vue({
+    			el:'#login',
+    			data:{
+    			    form: {
+                      username: '',
+                      password: '',
+                      text: ''
+                    }
+    			},
+    			methods: {
+    				onSubmit() {
+            			var val=this.form.text;  
+                        var num = show_num.join("");
+                        if(val==''){
+                            alert('请输入验证码！');
+                            return false;
+                        }else if(val != num){
+                            alert('验证码错误！');
+                            this.form.text='';
+                            draw(show_num);
+                            return false;
+                        }
+            			if (this.form.username == '' || this.form.password == '') {
+                            alert('账号或密码不能为空');
+                            return false;
+                        }
+                        var pwdRegex = new RegExp('(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[^a-zA-Z0-9]).{8,30}');
+                        if (!pwdRegex.test(this.form.password)) {
+                            alert('您的口令错误！');
+                            return false;
+                        }
+                        let data = new FormData();
+                        data.append('username',this.form.username);
+                        data.append('password',this.form.password);
+                        axios
+                        .post('bxxLogin.php',data)
+                        .then(response => {
+                            this.form.info = response.data;
+                            if(response.data['status']=='200'){
+                                localStorage.setItem('token', response.data['token']);
+                                window.location.href="bxxMain.html";
+                            }else if(response.data['status']=='201'){
+                                localStorage.setItem('token', "");
+                                alert('用户名或密码错误');
+                            }else{
+                                localStorage.setItem('token', "");
+                                alert('未知错误');
+                            }
+                        })
+                        .catch(function (error) { // 请求失败处理
+                            console.log(error);
+                        });
+                    },
+                    initall() {
+                        let token = localStorage.getItem('token');
+                        let data = new FormData();
+                        data.append('token',token);
+                        axios
+                        .post('initall.php',data)
+                        .then(response => {
+                            if(response.data['status']=='200'){
+                                localStorage.setItem('token', response.data['token']);
+                                window.location.href="bxxMain.html";
+                            }else if(response.data['status']=='201'){
+                                localStorage.setItem('token', "");
+                            }else if(response.data['status']=='202'){
+                                 localStorage.setItem('token', "");
+                                alert('警告！出现非法入侵，已上报系统！');
+                            }else{
+                                localStorage.setItem('token', "");
+                                alert('未知错误');
+                            }
+                        })
+                        .catch(function (error) { // 请求失败处理
+                            console.log(error);
+                        });
+                    }
+    			},
+    			created:function(){
+    			    this.initall();
+                }
+    		});
+        	var show_num = [];
+            draw(show_num);
+            function dj(){
+                 draw(show_num);   
+            }
+            function sublim(){
+                var val=document.getElementById("text").value;  
+                var num = show_num.join("");
+                if(val==''){
+                    alert('请输入验证码！');
+                }else if(val == num){
+                    alert('提交成功！');
+                    document.getElementById(".input-val").val('');
+                    draw(show_num);
+    
+                }else{
+                    alert('验证码错误！\n你输入的是:  '+val+"\n正确的是:  "+num+'\n请重新输入！');
+                    document.getElementById("text").value='';
+                    draw(show_num);
+                }
+            }
+            function draw(show_num) {
+                var canvas_width=document.getElementById('canvas').clientWidth;
+                var canvas_height=document.getElementById('canvas').clientHeight;
+                var canvas = document.getElementById("canvas");//获取到canvas的对象，演员
+                var context = canvas.getContext("2d");//获取到canvas画图的环境，演员表演的舞台
+                canvas.width = canvas_width;
+                canvas.height = canvas_height;
+                var sCode = "A,B,C,E,F,G,H,J,K,L,M,N,P,Q,R,S,T,W,X,Y,Z,1,2,3,4,5,6,7,8,9,0,q,w,e,r,t,y,u,i,o,p,a,s,d,f,g,h,j,k,l,z,x,c,v,b,n,m";
+                var aCode = sCode.split(",");
+                var aLength = aCode.length;//获取到数组的长度
+                for (var i = 0; i <= 3; i++) {
+                    var j = Math.floor(Math.random() * aLength);//获取到随机的索引值
+                    var deg = Math.random() * 30 * Math.PI / 180;//产生0~30之间的随机弧度
+                    var txt = aCode[j];//得到随机的一个内容
+                    show_num[i] = txt;
+                    var x = 10 + i * 20;//文字在canvas上的x坐标
+                    var y = 20 + Math.random() * 8;//文字在canvas上的y坐标
+                    context.font = "bold 23px 微软雅黑";
+                    context.translate(x, y);
+                    context.rotate(deg);
+                    context.fillStyle = randomColor();
+                    context.fillText(txt, 0, 0);
+                    context.rotate(-deg);
+                    context.translate(-x, -y);
+                }
+                for (var i = 0; i <= 5; i++) { //验证码上显示线条
+                    context.strokeStyle = randomColor();
+                    context.beginPath();
+                    context.moveTo(Math.random() * canvas_width, Math.random() * canvas_height);
+                    context.lineTo(Math.random() * canvas_width, Math.random() * canvas_height);
+                    context.stroke();
+                }
+                for (var i = 0; i <= 30; i++) { //验证码上显示小点
+                    context.strokeStyle = randomColor();
+                    context.beginPath();
+                    var x = Math.random() * canvas_width;
+                    var y = Math.random() * canvas_height;
+                    context.moveTo(x, y);
+                    context.lineTo(x + 1, y + 1);
+                    context.stroke();
+                }
+            }
+            function randomColor() {//得到随机的颜色值
+                var r = Math.floor(Math.random() * 256);
+                var g = Math.floor(Math.random() * 256);
+                var b = Math.floor(Math.random() * 256);
+                return "rgb(" + r + "," + g + "," + b + ")";
+            }
+    	</script>
+    	
+	</body>
+</html>
+

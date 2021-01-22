@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品管理系统后台</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="__PUB__/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="__PUB__/css/font.css">
+    <link rel="stylesheet" href="__PUB__/css/xadmin.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+    <script src="__PUB__/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="__PUB__/js/xadmin.js"></script>
+
+</head>
+<body>
+    <!-- 中部开始 -->
+    <div class="wrapper">
+        <!-- 右侧主体开始 -->
+        <div class="page-content">
+          <div class="content">
+            <!-- 右侧内容框架，更改从这里开始 -->
+            <form class="layui-form" action="{:url('@admin/orders/do_backedit')}" method="post">
+                
+                <div class="layui-form-item">
+                    <label for="des" class="layui-form-label">
+                        订单编号
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="id" name="id" required lay-verify="required" readonly autocomplete="off" value={$adee.id} class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="rename" class="layui-form-label">
+                        用户名称
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="username" name="username" required lay-verify="required" readonly autocomplete="off" value={$auser} class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="rename" class="layui-form-label">
+                        商品名称
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="goodname" name="goodname" required lay-verify="required" readonly autocomplete="off" value={$agood} class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="des" class="layui-form-label">
+                        状态
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="status" name="status" required lay-verify="required" readonly autocomplete="off" value={$adee.status} class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="des" class="layui-form-label">
+                        创建时间
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="time" name="time" required lay-verify="required" readonly autocomplete="off" value={$adee.createtime} class="layui-input">
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label for="L_sign" class="layui-form-label">
+                    </label>
+                    <button class="layui-btn" key="set-mine" lay-filter="save" lay-submit>
+                        确认退货
+                    </button>
+                </div>
+            </form>
+            <!-- 右侧内容框架，更改从这里结束 -->
+          </div>
+        </div>
+        <!-- 右侧主体结束 -->
+
+        
+    </div>
+    <!-- 中部结束 -->
+   
+</body>
+</html>

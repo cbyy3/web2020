@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品管理系统后台</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="__PUB__/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="__PUB__/css/font.css">
+    <link rel="stylesheet" href="__PUB__/css/xadmin.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+    <script src="__PUB__/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="__PUB__/js/xadmin.js"></script>
+
+</head>
+<body>
+    <!-- 中部开始 -->
+    <div class="wrapper">
+        <!-- 右侧主体开始 -->
+        <div class="page-content">
+          <div class="content">
+            <!-- 右侧内容框架，更改从这里开始 -->
+            <form class="layui-form" action="{:url('@admin/goods/do_edit')}" method="post" onSubmit="return legalCheck();">
+                
+                <div class="layui-form-item">
+                    <label for="rename" class="layui-form-label">
+                        原商品名称
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="rename" name="rename" required lay-verify="required" readonly autocomplete="off" value={$adee.name} class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="name" class="layui-form-label">
+                        商品名称
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="name" name="name" required lay-verify="required" autocomplete="off" value={$adee.name} class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        <span class="x-red">*</span>2-10位英文字符
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="des" class="layui-form-label">
+                        描述
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="des" name="des" required lay-verify="required" autocomplete="off" value={$adee.des} class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        1-2000位字符
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label for="name" class="layui-form-label">
+                        数量
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="num" name="num" required lay-verify="required" autocomplete="off" value={$adee.num} class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        <span class="x-red">*</span>非负整数
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="name" class="layui-form-label">
+                        价格
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="price" name="price" required lay-verify="required" autocomplete="off" value={$adee.price} class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        <span class="x-red">*</span>非负浮点数（保留两位小数）
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="name" class="layui-form-label">
+                        状态
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="status" name="status" required lay-verify="required" autocomplete="off" value={$adee.status} class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        <span class="x-red">*</span>（1：有效 2：无效）
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_sign" class="layui-form-label">
+                    </label>
+                    <button class="layui-btn" key="set-mine" lay-filter="save" lay-submit>
+                        保存
+                    </button>
+                </div>
+            </form>
+            <!-- 右侧内容框架，更改从这里结束 -->
+          </div>
+        </div>
+        <!-- 右侧主体结束 -->
+
+        <script>
+        function legalCheck(){
+            var aRegex = /^[\u4e00-\u9fa5]{2,10}$/;
+            var bRegex = /^[a-zA-Z]{2,10}$/;
+            var cRegex = /^[a-zA-Z\u4e00-\u9fa5]{1,2000}$/;
+            var dRegex = /^\d+$/;
+            var eRegex = /^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/;
+            var name=document.getElementById("name").value;
+            var des=document.getElementById("des").value;
+            var num=document.getElementById("num").value;
+            var price=document.getElementById("price").value;
+            var status=document.getElementById("status").value;
+            var skip=true;
+            if(!bRegex.test(name)){
+                alert("商品名称不符合规范！");
+                skip=false;
+                return false;
+            }else if(des.length>2000){
+                alert("描述文字不符合规范！");
+                skip=false;
+                return false;
+            }else if(!dRegex.test(num)){
+                alert("商品数量不符合规范！");
+                skip=false;
+                return false;
+            }else if(!eRegex.test(price)){
+                alert("商品价格不符合规范！");
+                skip=false;
+                return false;
+            }else if(status!=1&&status!=2){
+                alert("商品状态只能是1/2！");
+                skip=false;
+                return false;
+            }
+            if(skip){
+                return true;
+            }
+        }
+        </script>
+    </div>
+    <!-- 中部结束 -->
+   
+</body>
+</html>

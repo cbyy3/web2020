@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>并夕夕商品秒杀系统</title>
+        <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.1/vue.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<!-- 1. 导入css -->
+		<link href="https://cdn.bootcss.com/element-ui/2.14.1/theme-chalk/index.css" rel="stylesheet">
+		<!-- 2. 引入vue和vue-router-->
+		<script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+		<!-- 未使用vue路由功能可不导入 -->
+		<script src="https://cdn.bootcss.com/vue-router/3.0.6/vue-router.js"></script>
+		<!-- 3. 引入ElementUI组件 -->
+		<script src="https://cdn.bootcss.com/element-ui/2.14.1/index.js"></script>
+	</head>
+	<body>
+	    <h2>
+	        并夕夕商品总览——每人每种商品限购一件
+	    </h2>
+	    <h4>
+	        （2021-01-22 00:00:00 开始）
+	    </h4>
+	    
+	    <div id="app">
+            <el-row>
+                <el-button type="primary" @click="myinfo">我的订单</el-button>
+                <el-button type="primary" plain @click="sightout">退出</el-button>
+            </el-row>
+		    <template v-for="n in form.num">
+                <li></li>
+                <el-card>
+                    <h4>{{form.good[n][1]}}</h4>
+                    <p>价格：{{form.good[n][3]}}</p>
+                    <p>库存数量：{{form.good[n][2]}}</p>
+                    <el-button type="primary" @click="onbuy(form.good[n][0])">购买</el-button>
+                </el-card>
+            </template>
+		</div>
+    	<script>
+    		var vm=new Vue({
+    			el:'#app',
+    			data:{
+    			    form: {
+                      num: 5,
+                      good:''
+                    }
+    			},
+    			methods: {
+    				onSubmit() {
+                        console.log('submit!')
+                    },
+                    initall() {
+                        let token = localStorage.getItem('token');
+                        let data = new FormData();
+                        data.append('token',token);
+                        axios
+                        .post('initall.php',data)
+                        .then(response => {
+                            if(response.data['status']=='200'){
+                                localStorage.setItem('token', response.data['token']);
+                                this.initform();
+                            }else if(response.data['status']=='201'){
+                                alert('请重新登录！');
+                                localStorage.setItem('token', "");
+                                window.location.href="bxxLogin.html";
+                            }else if(response.data['status']=='202'){
+                                alert('警告！出现非法入侵，已上报系统！');
+                                window.location.href="bxxLogin.html";
+                            }else{
+                                alert('未知错误！');
+                                localStorage.setItem('token', "");
+                                window.location.href="bxxLogin.html";
+                            }
+                        })
+                        .catch(function (error) { // 请求失败处理
+                            console.log(error);
+                        });
+                        
+                    },
+                    initform(){
+                        axios
+                        .post('bxxMain.php')
+                        .then(response => {
+                            this.form.num = response.data[0];
+                            this.form.good = response.data;
+                        })
+                        .catch(function (error) { // 请求失败处理
+                            console.log(error);
+                        });
+                    },
+                    sightout() {
+                        localStorage.setItem('token', "");
+                        window.location.href="bxxLogin.html";
+                    },
+                    myinfo() {
+                        window.location.href="bxxInfo.html";
+                    },
+                    onbuy(name) {
+                        let token = localStorage.getItem('token');
+                        let data = new FormData();
+                        data.append('name',name);
+                        data.append('token',token);
+                        axios
+                        .post('bxxOrder.php',data)
+                        .then(response => {
+                            if(response.data['status']=='208'){
+                                alert('秒杀还未开始！');
+                            }else if(response.data['status']=='201'){
+                                alert('请重新登录！');
+                                localStorage.setItem('token', "");
+                                window.location.href="bxxLogin.html";
+                            }else if(response.data['status']=='202'){
+                                alert('警告！出现非法入侵，已上报系统！');
+                                window.location.href="bxxLogin.html";
+                            }else if(response.data['status']=='203'){
+                                alert('未知错误！');
+                                localStorage.setItem('token', "");
+                                window.location.href="bxxLogin.html";
+                            }else if(response.data['status']=='204'){
+                                alert('该商品已卖光！');
+                            }else if(response.data['status']=='206'){
+                                alert('每人每件商品限购一件！请挑选其他商品！');
+                            }else{
+                                alert('提交申请成功！请在我的订单中查看结果');
+                            }
+                        })
+                        .catch(function (error) { // 请求失败处理
+                            console.log(error);
+                        });
+                        
+                    }
+    			},
+    			created:function(){
+    			    this.initall();
+                }
+    		});
+    	</script>
+	</body>
+	
+	
+	
+</html>
+

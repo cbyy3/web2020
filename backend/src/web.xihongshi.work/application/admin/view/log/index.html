@@ -1,0 +1,89 @@
+这是Log管理页面
+    <!-- 右侧主体开始 -->
+        <div class="page-content">
+          <div class="content">
+            <!-- 右侧内容框架，更改从这里开始 -->
+            <form class="layui-form xbs" action="" >
+                <div class="layui-form-pane" style="text-align: center;">
+                  <div class="layui-form-item" style="display: inline-block;">
+                    <label class="layui-form-label xbs768">查找</label>
+                    
+                    <div class="layui-input-inline">
+                      <input type="text" name="findbyname"  placeholder="请输入用户名：{$namelast}" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-input-inline" style="width:80px">
+                        <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                    </div>
+                  </div>
+                </div> 
+            </form>
+            <xblock>
+                <button class="layui-btn layui-btn-danger" onclick="member_delall()">
+                    <i class="layui-icon">&#xe640;</i>
+                    批量清理（仅保留七天的数据）
+                    </button>
+                <span class="x-right" style="line-height:40px">共有数据：{$numlist} 条</span>
+            </xblock>
+            <table class="layui-table">
+                <thead>
+                    <tr>
+                        
+                        <th>
+                            用户名
+                        </th>
+                        <th>
+                            模块
+                        </th>
+                        <th>
+                            控制器
+                        </th>
+                        <th>
+                            方法
+                        </th>
+                        <th>
+                            ip地址
+                        </th>
+                        <th>
+                            时间
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {volist name="maglist" id="vo"}
+                    <tr>
+                        
+                        <td>
+                            {$vo.username}
+                        </td>
+                        <td>
+                            {$vo.m}
+                        </td>
+                        <td>
+                            {$vo.c}
+                        </td>
+                        <td>
+                            {$vo.a}
+                        </td>
+                        <td>
+                            {$vo.ip}
+                        </td>
+                        <td>
+                            {$vo.time} 
+                        </td>
+                    </tr>
+                    {/volist}
+                </tbody>
+            </table>
+            <!-- 右侧内容框架，更改从这里结束 -->
+          </div>
+        </div>
+        <!-- 右侧主体结束 -->
+        
+        <script>
+        
+        //批量删除
+        function member_delall() {
+			window.location.href= "delall";
+        }
+        
+        </script>

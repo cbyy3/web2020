@@ -1,0 +1,169 @@
+个人信息编辑页面
+        <!-- 右侧内容框架，更改从这里开始 -->
+            <form class="layui-form" action="{:url('@admin/admin/do_change')}" method="post" onSubmit="return legalCheck();">
+                
+                <div class="layui-form-item">
+                    <label for="L_username" class="layui-form-label">
+                        用户：
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="reusername" name="reusername" lay-verify="required" readonly   autocomplete="off" class="layui-input" value={$adee.username}>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_username" class="layui-form-label">
+                        用户名：
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="username" name="username" lay-verify="required"  autocomplete="off" class="layui-input" value={$adee.username}>
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        <span class="x-red">*</span>请由中/英字符组成，不超过10字符
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_username" class="layui-form-label">
+                        e-mail：
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="email" name="email" autocomplete="off" class="layui-input" value={$adee.email}>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_username" class="layui-form-label">
+                        手机号码：
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="mobile" name="mobile"  autocomplete="off" class="layui-input" value={$adee.mobile}>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_username" class="layui-form-label">
+                        真实姓名：
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="realname" name="realname" autocomplete="off" class="layui-input"  value={$adee.realname}>
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        <span class="x-red">*</span>请由中/英字符组成，不超过20字符
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="sign" class="layui-form-label">
+                    </label>
+                    <button class="layui-btn" key="set-mine" lay-filter="save" lay-submit>
+                        修改基本信息
+                    </button>
+                </div>
+            </form>
+        <script>
+        function legalCheck(){
+            var bRegex = /^[a-zA-Z\u4e00-\u9fa5]{1,10}$/;
+            var cRegex = /^[a-zA-Z\u4e00-\u9fa5]{0,20}$/;
+            var fRegex = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/g;
+            var gRegex = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+            var name=document.getElementById("username").value;
+            var email=document.getElementById("email").value;
+            var mobile=document.getElementById("mobile").value;
+            var realname=document.getElementById("realname").value;
+            var skip=true;
+            if(!bRegex.test(name)){
+                alert("用户名不符合规范！");
+                skip=false;
+                return false;
+            }else if(!gRegex.test(email)&&email!=""){
+                alert("e-mail不符合规范！");
+                skip=false;
+                return false;
+            }else if(!fRegex.test(mobile)&&mobile!=""){
+                alert("手机号码不符合规范！");
+                skip=false;
+                return false;
+            }else if(!cRegex.test(realname)&&realname!=""){
+                alert("真实姓名不符合规范！");
+                skip=false;
+                return false;
+            }
+            if(skip){
+                return true;
+            }
+        }
+        </script>
+            
+            <form class="layui-form" action="{:url('@admin/admin/do_changepsd')}" method="post" onSubmit="return legalCheck2();">
+                <div class="layui-form-item">
+                    <label for="L_username" class="layui-form-label">
+                        用户：
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="reusername" name="reusername" required lay-verify="required" readonly   autocomplete="off" class="layui-input" value={$adee.username}>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_oldpsd" class="layui-form-label">
+                        原密码：
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="password" id="oldpsd" name="oldpsd" required lay-verify="required"
+                          autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="newpsd" class="layui-form-label">
+                        新密码：
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="password" id="newpsd" name="newpsd" required lay-verify="required"
+                        autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        <span class="x-red">*</span>密码中必须包含大小写字母、数字、特称字符，长度在8-30之间
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="renewpsd" class="layui-form-label">
+                        确认新密码：
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="password" id="renewpsd" name="renewpsd" required lay-verify="required"
+                        autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label for="sign" class="layui-form-label">
+                    </label>
+                    <button class="layui-btn" key="set-mine" lay-filter="save" lay-submit>
+                        修改密码
+                    </button>
+                </div>
+            </form>
+            
+        <script>
+        function legalCheck2(){
+            var pwdRegex = new RegExp('(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[^a-zA-Z0-9]).{8,30}');
+            var oldpsd=document.getElementById("oldpsd").value;
+            var newpsd=document.getElementById("newpsd").value;
+            var renewpsd=document.getElementById("renewpsd").value;
+            var skip=true;
+            if(!pwdRegex.test(oldpsd)){
+                alert("原密码错误！");
+                skip=false;
+                return false;
+            }else if(!pwdRegex.test(newpsd)){
+                alert("新密码不符合规范！");
+                skip=false;
+                return false;
+            }else if(newpsd!=renewpsd){
+                alert("新密码不一致！");
+                skip=false;
+                return false;
+            }
+            if(skip){
+                return true;
+            }
+        }
+        </script>
+            <!-- 右侧内容框架，更改从这里结束 -->
+          
+        <!-- 右侧主体结束 -->

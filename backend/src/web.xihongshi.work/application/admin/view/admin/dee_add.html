@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品管理系统后台</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="__PUB__/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="__PUB__/css/font.css">
+    <link rel="stylesheet" href="__PUB__/css/xadmin.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+    <script src="__PUB__/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="__PUB__/js/xadmin.js"></script>
+
+</head>
+<body>
+    <!-- 中部开始 -->
+    <div class="wrapper">
+        <!-- 右侧主体开始 -->
+        <div class="page-content">
+          <div class="content">
+            <!-- 右侧内容框架，更改从这里开始 -->
+            <form class="layui-form" action="{:url('@admin/admin/do_dee_add')}" method="post" onSubmit="return legalCheck();">
+                
+                <div class="layui-form-item">
+                    <label for="L_username" class="layui-form-label">
+                        <span class="x-red">*</span>用户名
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="username" name="username" required="required" lay-verify="name"
+                        autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        <span class="x-red">*</span>将会成为您唯一的登入名，请由中/英字符组成，不超过10字符
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label for="L_username" class="layui-form-label">
+                        <span class="x-red">*</span>身份
+                    </label>
+                    <div class="layui-input-inline">
+                        <select name="group">
+                        <option value="1">系统管理员</option>
+                        <option value="2">商品管理员</option>
+                        <option value="3">订单管理员</option>
+                        <option value="4">高层领导</option>
+                        </select><br>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_username" class="layui-form-label">
+                        <span class="x-red">*</span>是否锁定
+                    </label>
+                    <div class="layui-input-inline">
+                        <select name="code">
+                        <option value="1">未锁定</option>
+                        <option value="2">锁定</option>
+                        </select><br>
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label for="L_pass" class="layui-form-label">
+                        <span class="x-red">*</span>密码
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="password" id="password" name="password" required="required" lay-verify="pass"  value="Admin,123"
+                        autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        密码中必须包含大小写字母、数字、特称字符，长度在8-30之间
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_repass" class="layui-form-label">
+                        <span class="x-red">*</span>确认密码
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="password" id="repassword" name="repassword" required="required" lay-verify="repass"  value="Admin,123"
+                        autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_repass" class="layui-form-label">
+                    </label>
+                    <button  class="layui-btn" lay-filter="add" lay-submit="" id="add">
+                        添加
+                    </button>
+                </div>
+            </form>
+            <!-- 右侧内容框架，更改从这里结束 -->
+          </div>
+        </div>
+        <!-- 右侧主体结束 -->
+
+        <script>
+        function legalCheck(){
+            var pwdRegex = new RegExp('(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[^a-zA-Z0-9]).{8,30}');
+            var usernameRegex = new RegExp('^[a-zA-Z\u4e00-\u9fa5]+$');
+            var name=document.getElementById("username").value;
+            var psd=document.getElementById("password").value;
+            var repsd=document.getElementById("repassword").value;
+            var skip=true;
+            if(!usernameRegex.test(name)||name.length>10){
+                alert("您的用户名不符合规范！");
+                skip=false;
+                return false;
+            }else if(!pwdRegex.test(psd)){
+                alert("您的密码复杂度太低（密码中必须包含大小写字母、数字、特殊字符），请及时修改密码！");
+                skip=false;
+                return false;
+            }else if(psd!=repsd){
+                alert("你的确认密码与原密码不一致");
+                skip=false;
+                return false;
+            }if(skip){
+                return true;
+            }
+        }
+  </script>
+    </div>
+    <!-- 中部结束 -->
+   
+</body>
+</html>

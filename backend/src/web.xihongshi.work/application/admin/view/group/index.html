@@ -1,0 +1,146 @@
+这是分组管理页面
+    <!-- 右侧主体开始 -->
+        <div class="page-content">
+          <div class="content">
+            <!-- 右侧内容框架，更改从这里开始 -->
+            <form class="layui-form xbs" action="" >
+                <div class="layui-form-pane" style="text-align: center;">
+                  <div class="layui-form-item" style="display: inline-block;">
+                    <label class="layui-form-label xbs768">查找</label>
+                    
+                    <div class="layui-input-inline">
+                      <input type="text" name="findbyname"  placeholder="请输入组别名：{$namelast}" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-input-inline" style="width:80px">
+                        <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                    </div>
+                  </div>
+                </div> 
+            </form>
+            <xblock>
+                <button class="layui-btn layui-btn-danger" onclick="member_delall()">
+                    <i class="layui-icon">&#xe640;</i>
+                    批量删除
+                    </button>
+                <button class="layui-btn" onclick="member_add('添加管理员','add','800','500')">
+                    <i class="layui-icon">&#xe608;</i>
+                    添加
+                    </button>
+                <span class="x-right" style="line-height:40px">共有数据：{$numlist} 条</span>
+            </xblock>
+            <table class="layui-table">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" name="check" value="" onclick="check_all(this,'check');">
+                        </th>
+                        
+                        <th>
+                            组别名
+                        </th>
+                        <th>
+                            描述
+                        </th>
+                        <th>
+                            末次修改时间
+                        </th>
+                        <th>
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {volist name="maglist" id="vo"}
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="checkb" value="{$vo.id}" name="check">
+                        </td>
+                        
+                        <td>
+                            {$vo.name}
+                        </td>
+                        <td>
+                            {$vo.description}
+                        </td>
+                        <td>
+                            {$vo.updatetime} 
+                        </td>
+                        <td class="td-manage">
+                            
+                            <a title="编辑" href="javascript:;" onclick="member_edit('编辑','edit?void={$vo.id}','4','800','500')"
+                            class="ml-5" style="text-decoration:none">
+                                <i class="layui-icon">&#xe642;</i>
+                            </a>
+                            
+                            <a title="删除" href="del?void={$vo.id}">
+                                <i class="layui-icon">&#xe640;</i>
+                            </a>
+                            
+                        </td>
+                    </tr>
+                    {/volist}
+                </tbody>
+            </table>
+            <!-- 右侧内容框架，更改从这里结束 -->
+          </div>
+        </div>
+        <!-- 右侧主体结束 -->
+        
+        <script>
+        /*用户-添加*/
+        function member_add(title,url,w,h){
+            x_admin_show(title,url,w,h);
+        }
+        // 用户-编辑
+        function member_edit (title,url,id,w,h) {
+            x_admin_show(title,url,w,h); 
+        }
+        //全选
+        function check_all(obj, cName) {
+         
+          var checkboxs = document.getElementsByName(cName);
+          for ( var i = 0; i < checkboxs.length; i+=1) {
+            checkboxs[i].checked = obj.checked;
+          }
+        }
+        function member_delall() {
+            var result="";
+			var count=0;
+			$(".checkb").each(function(){    
+			    if($(this).is(':checked')){
+			    	result+=$(this).val()+",";
+			    	count++;
+			    }else{}
+			  });
+			if(!confirm("确定删除这"+count+"件商品?")){
+				return;
+			}
+			window.location.href= "delall?tag="+result;
+        }
+        //IP转成整型
+        function _ip2int(ip) 
+        {
+            var num = 0;
+            ip = ip.split(".");
+            num = Number(ip[0]) * 256 * 256 * 256 + Number(ip[1]) * 256 * 256 + Number(ip[2]) * 256 + Number(ip[3]);
+            num = num >>> 0;
+            document.getElementById("lastip").innerHTML=num;
+            //return num;
+        }
+        
+        //整型解析为IP地址
+        function _int2iP(num) 
+        {
+            var str;
+            var tt = new Array();
+            tt[0] = (num >>> 24) >>> 0;
+            tt[1] = ((num << 8) >>> 24) >>> 0;
+            tt[2] = (num << 16) >>> 24;
+            tt[3] = (num << 24) >>> 24;
+            str = String(tt[0]) + "." + String(tt[1]) + "." + String(tt[2]) + "." + String(tt[3]);
+            return str;
+        }
+        function print() {
+            document.getElementById("demo").innerHTML="RUNOOB!";
+        }
+        </script>
